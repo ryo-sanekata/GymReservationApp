@@ -39,7 +39,7 @@
                             <p class="card-text">{{ $facility->description }}</p>
                             <p><strong>価格:</strong> ¥{{ number_format($facility->price_per_hour) }} / 時間</p>
                             <p><strong>カテゴリー:</strong> {{ $facility->category }}</p>
-                            <a href="#" class="btn btn-primary">詳細を見る</a>
+                            <a href="{{ route('facilities.show', ['id' => $facility->id]) }}" class="btn btn-primary">詳細を見る</a>
                         </div>
                     </div>
                 </div>

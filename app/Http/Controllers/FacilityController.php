@@ -34,4 +34,14 @@ class FacilityController extends Controller
 
         return view('facilities.index', compact('facilities'));
     }
+
+    public function show($id)
+    {
+        // 指定されたIDの施設を取得
+        $facility = Facility::findOrFail($id);
+
+        // 詳細ページビューにデータを渡す
+        return view('facilities.show', compact('facility'));
+    }
+
 }
