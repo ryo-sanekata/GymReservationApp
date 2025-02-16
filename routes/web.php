@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +21,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
+
 Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
 
 Route::get('/facilities/{id}', [FacilityController::class, 'show'])->name('facilities.show');
 
 Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
+
+Route::get('/reservations/complete', function () {
+    return view('reservations.complete');
+})->name('reservations.complete');
+
+Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::get('/facilities/{facility}/reserve', [ReservationController::class, 'create'])->name('reservations.create');

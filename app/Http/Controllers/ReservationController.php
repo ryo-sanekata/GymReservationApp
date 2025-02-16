@@ -9,47 +9,45 @@ use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
-    public function create($facilityId)
+    public function create($facility_id)
     {
-        // 施設情報を取得
-        $facility = Facility::findOrFail($facilityId);
-
-        // 予約ページに施設情報を渡す
-        return view('reservations.create', compact('facility'));
+        $facility = Facility::findOrFail($facility_id);
+    
+        // 予約可能な時間リスト（例: 9:00〜21:00）
+        $timeSlots = [];
+        for ($hour = 9; $hour <= 21; $hour++) {
+            $timeSlots[] = sprintf('%02d:00', $hour);
+        }
+    
+        // 予約済みの時間帯を取得
+        $reservedTimes = Reservation::where('facility_id', $facility_id)
+            ->where('reservation_date', request('reservation_date'))
+            ->pluck('start_time', 'end_time')
+            ->toArray();
+    
+        return view('reservations.create', compact('facility', 'timeSlots', 'reservedTimes'));
     }
+    
 
-    public function store(Request $request, $facilityId)
+    public function store(Request $request, $facility_id)
     {
         $request->validate([
-            'reservation_date' => 'required|date|after_or_equal:today',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'reservation_date' => 'required|date',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
         ]);
-
-        // 予約重複チェック
-        $conflict = Reservation::where('facility_id', $facilityId)
-            ->where('reservation_date', $request->reservation_date)
-            ->where(function ($query) use ($request) {
-                $query->whereBetween('start_time', [$request->start_time, $request->end_time])
-                    ->orWhereBetween('end_time', [$request->start_time, $request->end_time]);
-            })
-            ->exists();
-
-        if ($conflict) {
-            return back()->withErrors(['error' => '指定された時間帯はすでに予約されています。']);
-        }
-
+    
         Reservation::create([
-            'user_id' => Auth::id(),
-            'facility_id' => $facilityId,
+            'user_id' => auth()->id(),
+            'facility_id' => $facility_id, // ここを修正
             'reservation_date' => $request->reservation_date,
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
         ]);
-
-        return redirect()->route('facilities.show', $facilityId)
-            ->with('success', '予約が完了しました！');
-    }
+    
+        return redirect()->route('reservations.complete');
+    }    
+    
 
 
 
