@@ -49,6 +49,18 @@ class ReservationController extends Controller
     }    
     
 
-
+    public function destroy($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+    
+        // 予約の所有者かどうかを確認
+        if ($reservation->user_id !== auth()->id()) {
+            return redirect()->route('mypage')->with('error', '削除権限がありません。');
+        }
+    
+        $reservation->delete();
+    
+        return redirect()->route('mypage')->with('success', '予約を削除しました。');
+    }
 
 }

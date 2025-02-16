@@ -21,6 +21,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/', [FacilityController::class, 'index'])->name('facilities.index');
+
 Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
 
 Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');
@@ -34,6 +36,18 @@ Route::get('/reservations/complete', function () {
 })->name('reservations.complete');
 
 Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage')->middleware('auth');
+
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+
+// 予約削除のルート（DELETEメソッド）
+Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy'])
+    ->name('reservations.destroy')
+    ->middleware('auth'); // ログイン必須
 
 Route::middleware('auth')->group(function () {
     Route::get('/facilities/{facility}/reserve', [ReservationController::class, 'create'])->name('reservations.create');

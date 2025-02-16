@@ -12,7 +12,7 @@ class Facility extends Model
     // テーブル名（省略時、モデル名の複数形が使用されるため、明示的に設定）
     protected $table = 'facilities';
 
-    // マスアサインメント可能なカラム
+
     protected $fillable = [
         'name',
         'address',

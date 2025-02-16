@@ -16,12 +16,25 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="{{ route('facilities.index') }}">施設一覧</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">ログイン</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">新規登録</a>
-                    </li>
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('mypage') }}">マイページ</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="{{ route('logout') }}" method="POST" id="logout-form" style="display: none;">
+                                @csrf
+                            </form>
+                            <a href="#" class="nav-link" onclick="event.preventDefault(); confirmLogout();">ログアウト</a>
+                        </li>
+                    @endauth
+                    @guest
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">ログイン</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">会員登録</a>
+                        </li>
+                    @endguest
                 </ul>
             </div>
         </nav>
@@ -31,5 +44,14 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    @yield('scripts')
+    <!-- ログアウト確認のJS -->
+    <script type="text/javascript">
+        function confirmLogout() {
+            if (confirm('本当にログアウトしますか？')) {
+                document.getElementById('logout-form').submit();
+            }
+        }
+    </script>
 </body>
 </html>
