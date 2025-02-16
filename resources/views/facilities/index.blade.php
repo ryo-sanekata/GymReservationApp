@@ -46,10 +46,5 @@
             @endforeach
         </div>
     @endif
-    <div class="ml-auto">
-            @auth
-                <a href="{{ route('mypage') }}" class="btn btn-outline-primary">マイページへ</a>
-            @endauth
-    </div>
 </div>
 @endsection
