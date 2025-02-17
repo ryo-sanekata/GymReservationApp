@@ -44,6 +44,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">予約する</button>
+        <a href="{{ route('facilities.index') }}" class="btn btn-secondary">トップへ戻る</a>
     </form>
 </div>
 @endsection
