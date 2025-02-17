@@ -13,10 +13,12 @@
         <div class="form-group">
             <label for="category">カテゴリーで絞り込み:</label>
             <select name="category" id="category" class="form-control">
-                <option value="">すべて</option>
-                <option value="basketball" {{ request('category') == 'basketball' ? 'selected' : '' }}>バスケットボール</option>
-                <option value="soccer" {{ request('category') == 'soccer' ? 'selected' : '' }}>サッカー</option>
-                <option value="tennis" {{ request('category') == 'tennis' ? 'selected' : '' }}>テニス</option>
+                <option value="">すべてのカテゴリ</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->category }}" {{ request('category') == $category->category ? 'selected' : '' }}>
+                        {{ $category->category }}
+                    </option>
+                @endforeach
             </select>
         </div>
         <div class="form-group">
@@ -32,8 +34,8 @@
     @else
         <div class="row">
             @foreach ($facilities as $facility)
-                <div class="col-md-4">
-                    <div class="card">
+                <div class="col-md-4 col-sm-6 col-12 mb-4">
+                    <div class="card h-100">
                         <div class="card-body">
                             <h5 class="card-title">{{ $facility->name }}</h5>
                             <p class="card-text">{{ $facility->description }}</p>

@@ -12,22 +12,28 @@ class FacilityController extends Controller
         // 検索クエリの処理
         $query = Facility::query();
 
-        // カテゴリでの絞り込み
-        if ($request->has('category')) {
-            $query->where('category', $request->category);
-        }
+        // // カテゴリでの絞り込み
+        // if ($request->has('category')) {
+        //     $query->where('category', $request->category);
+        // }
 
         // 施設名での検索
-        if ($request->has('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
+        // if ($request->has('search')) {
+        //     $query->where('name', 'like', '%' . $request->search . '%');
+        // }
 
         // 価格帯での絞り込み
         if ($request->has('price')) {
             $price = (float) $request->price;  // 数値にキャスト
             $query->where('price_per_hour', '<=', $price);
         }
-        
+
+        $facilities = Facility::all();
+
+        // カテゴリ一覧を取得（重複をなくすためにdistinct()を使用）
+        $categories = Facility::select('category')->distinct()->get();
+    
+        return view('facilities.index', compact('facilities', 'categories'));
 
         // 施設のリストを取得
         $facilities = $query->get();
@@ -53,9 +59,17 @@ class FacilityController extends Controller
             $query->where('name', 'LIKE', '%' . $request->keyword . '%');
         }
 
+            // カテゴリ絞り込み
+        if ($request->has('category') && !empty($request->category)) {
+            $query->where('category', $request->category);
+        }
+
         $facilities = $query->get();
 
-        return view('facilities.index', compact('facilities'));
+        // カテゴリ一覧を取得（ビューのセレクトボックス用）
+        $categories = Facility::select('category')->distinct()->get();
+
+        return view('facilities.index', compact('facilities', 'categories'));
     }
 
 }
