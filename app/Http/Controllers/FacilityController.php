@@ -44,4 +44,18 @@ class FacilityController extends Controller
         return view('facilities.show', compact('facility'));
     }
 
+    public function search(Request $request)
+    {
+        $query = Facility::query();
+
+        // 検索キーワードがある場合のみ検索する
+        if ($request->has('keyword') && !empty($request->keyword)) {
+            $query->where('name', 'LIKE', '%' . $request->keyword . '%');
+        }
+
+        $facilities = $query->get();
+
+        return view('facilities.index', compact('facilities'));
+    }
+
 }

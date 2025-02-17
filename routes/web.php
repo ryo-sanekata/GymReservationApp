@@ -23,6 +23,8 @@ Route::get('/', function () {
 
 Route::get('/', [FacilityController::class, 'index'])->name('facilities.index');
 
+Route::get('/facilities/search', [FacilityController::class, 'search'])->name('facilities.search');
+
 Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
 
 Route::get('/facilities', [FacilityController::class, 'index'])->name('facilities.index');

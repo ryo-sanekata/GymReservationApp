@@ -5,10 +5,10 @@
     <h1>施設一覧</h1>
 
     <!-- 検索フォーム -->
-    <form action="{{ route('facilities.index') }}" method="GET" class="mb-3">
+    <form action="{{ route('facilities.search') }}" method="GET" class="mb-3">
         <div class="form-group">
             <label for="search">施設名で検索:</label>
-            <input type="text" name="search" id="search" class="form-control" value="{{ request('search') }}">
+            <input type="text" name="keyword" id="search" class="form-control" value="{{ request('keyword') }}">
         </div>
         <div class="form-group">
             <label for="category">カテゴリーで絞り込み:</label>
