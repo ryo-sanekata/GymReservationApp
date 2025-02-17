@@ -72,4 +72,16 @@ class FacilityController extends Controller
         return view('facilities.index', compact('facilities', 'categories'));
     }
 
+    // 施設削除メソッド
+    public function destroy($id)
+    {
+        // 該当する施設を取得
+        $facility = Facility::findOrFail($id);
+
+        // 施設を削除
+        $facility->delete();
+
+        // 削除後、管理者ページへリダイレクト
+        return redirect()->route('mypage')->with('success', '施設を削除しました。');
+    }
 }

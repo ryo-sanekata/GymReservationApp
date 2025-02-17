@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Facility;
 
 class FacilityController extends Controller
@@ -26,6 +26,23 @@ class FacilityController extends Controller
         Facility::create($request->all());
 
         return redirect()->route('facilities.index')->with('success', '施設を登録しました！');
+    }
+
+
+    // 施設削除確認ページ
+    public function delete(Facility $facility)
+    {
+        return view('admin.facilities.delete', compact('facility'));
+    }
+
+    // 施設削除アクション
+    public function destroy(Facility $facility)
+    {
+        // 施設を削除
+        $facility->delete();
+
+        // 施設一覧ページにリダイレクトし、成功メッセージを表示
+        return redirect()->route('admin.facilities.index')->with('success', '施設が削除されました');
     }
 }
 

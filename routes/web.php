@@ -70,8 +70,18 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+// 管理者アカウントでの操作
+
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/facilities/create', [AdminFacilityController::class, 'create'])->name('admin.facilities.create');
     Route::post('/admin/facilities', [AdminFacilityController::class, 'store'])->name('admin.facilities.store');
+});
+
+Route::prefix('admin')->middleware('auth', 'admin')->group(function () {
+    // 施設削除ページ
+    Route::get('facilities/{facility}/delete', [FacilityController::class, 'delete'])->name('admin.facilities.delete');
+    
+    // 実際に施設を削除するアクション
+    Route::delete('facilities/{facility}', [FacilityController::class, 'destroy'])->name('admin.facilities.destroy');
 });
 

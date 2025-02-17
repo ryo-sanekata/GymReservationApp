@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Facility;
 use App\Models\Reservation;
 
 class UserController extends Controller
@@ -19,7 +20,11 @@ class UserController extends Controller
                                     ->with('facility')
                                     ->get();
 
+        // 施設一覧を取得（管理者用）
+        $facilities = Facility::all();
+
         // マイページのビューにデータを渡す
-        return view('mypage', compact('user', 'reservations'));
+        return view('mypage', compact('user', 'reservations', 'facilities'));
     }
 }
+
