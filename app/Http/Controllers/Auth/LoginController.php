@@ -6,9 +6,22 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 
 class LoginController extends Controller
 {
+
+    use AuthenticatesUsers;
+
+    /**
+     * ログイン後のリダイレクト先を変更
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect()->route('facilities.index'); // TOPページにリダイレクト
+    }
+
     // ログイン前に認証されているか確認
     public function __construct()
     {
