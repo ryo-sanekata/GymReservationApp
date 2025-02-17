@@ -14,12 +14,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('facilities.index') }}">施設一覧</a>
+                        <a class="nav-link" href="{{ route('facilities.index') }}">施設一覧(TOP)</a>
                     </li>
                     @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('mypage') }}">マイページ</a>
-                        </li>
+                        <!-- 管理者の場合は「管理者ページ」を表示 -->
+                        @if(auth()->user()->admin)
+                            <li class="nav-item">
+                                <a href="{{ route('mypage') }}" class="nav-link">管理者ページ</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a href="{{ route('mypage') }}" class="nav-link">マイページ</a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <form action="{{ route('logout') }}" method="POST" id="logout-form" style="display: none;">
                                 @csrf
@@ -27,13 +34,13 @@
                             <a href="#" class="nav-link" onclick="event.preventDefault(); confirmLogout();">ログアウト</a>
                         </li>
                     @endauth
-                    @auth
+                    <!-- @auth
                         @if(auth()->user()->admin)
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.facilities.create') }}">施設登録</a>
                             </li>
                         @endif
-                    @endauth
+                    @endauth -->
                     @guest
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">ログイン</a>
