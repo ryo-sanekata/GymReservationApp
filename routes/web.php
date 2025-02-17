@@ -6,6 +6,8 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin\FacilityController as AdminFacilityController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,3 +69,9 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/facilities/create', [AdminFacilityController::class, 'create'])->name('admin.facilities.create');
+    Route::post('/admin/facilities', [AdminFacilityController::class, 'store'])->name('admin.facilities.store');
+});
+

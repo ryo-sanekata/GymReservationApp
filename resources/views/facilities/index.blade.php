@@ -21,10 +21,10 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="price">最大料金（1時間）:</label>
             <input type="number" name="price" id="price" class="form-control" value="{{ request('price') }}" min="0">
-        </div>
+        </div> -->
         <button type="submit" class="btn btn-primary mt-2">検索</button>
     </form>
 

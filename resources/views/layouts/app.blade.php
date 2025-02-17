@@ -27,6 +27,13 @@
                             <a href="#" class="nav-link" onclick="event.preventDefault(); confirmLogout();">ログアウト</a>
                         </li>
                     @endauth
+                    @auth
+                        @if(auth()->user()->admin)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.facilities.create') }}">施設登録</a>
+                            </li>
+                        @endif
+                    @endauth
                     @guest
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">ログイン</a>
